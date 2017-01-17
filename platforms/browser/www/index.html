@@ -17,7 +17,7 @@ google.maps.event.addDomListener(window, 'load', getLocation);
  var newcenter;
  var map;
  var radius = 100;
- var type = 'store';
+ var type = 'stores';
  var selection = 0;
 function getLocation(){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 15000 });
@@ -63,20 +63,20 @@ function update(position) {
 	var marker = new google.maps.Marker({position: myLatlng,map: map});		
 	
 	if(selection == 1){
-	places(newcenter, radius, type);
-	} //no tengo salsa, puto
+	places(myLatlng, radius, type);
+	}
 	
-	setTimeout(getLocation2, 5000);
+	setTimeout(getLocation2, 7000);
 
 
 }
 
-function places(a,b,c){
+function places(myLatlng,b,c){
 
 infowindow = new google.maps.InfoWindow();
         var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
-          location: a,
+          location: myLatlng,
           radius: b,
           type: [c]
         }, callback);
@@ -91,6 +91,38 @@ infowindow = new google.maps.InfoWindow();
         }
       }
 
+	  
+	  
+var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+var icons = {
+  parking: {
+	icon: iconBase + 'parking_lot_maps.png'
+  },
+  library: {
+	icon: iconBase + 'library_maps.png'
+  },
+  info: {
+	icon: iconBase + 'info-i_maps.png'
+  }
+};
+	  
+	  
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var markers = new google.maps.Marker({
+    map: map,
+	//icon: icons[feature.type].icon,
+	//icon: 'place.png',
+    position: place.geometry.location
+  });
+
+google.maps.event.addListener(markers, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+	  
 function onError(error) {
     console.log('code: ' + error.code + '\n' +'message: ' + error.message + '\n');
 	getLocation();
