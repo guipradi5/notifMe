@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Geo Location</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map-canvas { height: 100% }
+</style>
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyBPNK3Zb3cbPdLPzSIZehmdz09_udfyjQ8&sensor=false&language=en&libraries=places"></script>
+<script type="text/javascript">
+google.maps.event.addDomListener(window, 'load', getLocation);
+ var mapOptions;
+ var newcenter;
+ var map;
+ var radius = 100;
+ var type = 'store';
+ var selection = 0;
+function getLocation(){
+	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 15000 });
+    
+    
+}
+
+google.maps.event.addListenerOnce(map, 'idle', function(){
+		getLocation2();
+});
+
+function onSuccess(position) {
+	console.log("refresh");	
+    var lat=position.coords.latitude;
+    var lang=position.coords.longitude;
+
+    //Google Maps
+    var myLatlng = new google.maps.LatLng(lat,lang);
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	mapOptions = {zoom: 15,center: myLatlng};
+    var marker = new google.maps.Marker({position: myLatlng,map: map});
+
+	setTimeout(getLocation2, 5000);
+
+}
+
+function getLocation2(position) {
+	navigator.geolocation.getCurrentPosition(update, onError,{ timeout: 15000 });
+	}
+function update(position) {
+	console.log("refresh");	
+    var lat=position.coords.latitude;
+    var lang=position.coords.longitude;
+
+    //Google Maps
+    var myLatlng = new google.maps.LatLng(lat,lang);
+	var newcenter = map.getCenter();
+	mapOptions = {zoom: 15,center: myLatlng};
+	if(newcenter != undefined)mapOptions = {zoom: 15,center: newcenter};
+	
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	
+	var marker = new google.maps.Marker({position: myLatlng,map: map});		
+	
+	if(selection == 1){
+	places(newcenter, radius, type);
+	} //no tengo salsa, puto
+	
+	setTimeout(getLocation2, 5000);
+
+
+}
+
+function places(a,b,c){
+
+infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+          location: a,
+          radius: b,
+          type: [c]
+        }, callback);
+      }
+
+
+ function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+function onError(error) {
+    console.log('code: ' + error.code + '\n' +'message: ' + error.message + '\n');
+	getLocation();
+}
+
+
+</script>
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>
