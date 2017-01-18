@@ -49,7 +49,7 @@ function onSuccess(position) {
 
 }
 
-function getLocation2(position) {
+function getLocation2() {
 	navigator.geolocation.getCurrentPosition(update, onError,{ timeout: 15000 });
 	}
 function update(position) {
@@ -150,6 +150,7 @@ function onError(error) {
 	</div>
 	<div>
 		<input type="number" id="radius" placeholder="Radio en metros">
+		<input type="button" onclick="updateradius(1)" value="Actualizar">
 		<input type="button" id="activate" onclick="updateradius(1)" value="Buscar sitios">
 	</div>
 </div>
@@ -167,11 +168,17 @@ function onError(error) {
 
 <script>
 	function showmenu(a){
-		$(""
+		
 	}
 	
 	
 	$( ".buttonplace" ).click(function() {
+	console.log($( this ).attr( "name" ));
+		type = $( this ).attr( "name" );
+	});
+	
+	$( ".gm-style-iw" ).click(function() {
+		$( this ).children( ".selected" )
 		type = $( this ).attr( "name" );
 	});
 	
