@@ -7,6 +7,11 @@
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
 #map-canvas { height: 100% }
+
+#top{
+ background:white;
+ width:100%;
+}
 </style>
         <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
@@ -132,6 +137,59 @@ function onError(error) {
 </script>
 </head>
 <body>
+<div id="top" onclick="hideshow(1)">
+	
+	<div onclick="showmenu(1)">
+		V
+	</div>
+	
+</div>
+<div id="side">
+	<div onclick="showplaces(1)">
+		Show places
+	</div>
+	<div>
+		<input type="number" id="radius" placeholder="Radio en metros">
+		<input type="button" id="activate" onclick="updateradius(1)" value="Buscar sitios">
+	</div>
+</div>
+<div id="places">
+	<div class="buttonplace" name="liquor_store">Licor</div>
+	<div class="buttonplace" name="bank">Banco</div>
+	<div class="buttonplace" name="night_club">Club Nocturno</div>
+	<div class="buttonplace" name="museum">Museo</div>
+	<div class="buttonplace" name="restaurant">Restaurants</div>
+	<div class="buttonplace" name="hospital">Hospital</div>
+</div>
 <div id="map-canvas"></div>
+
+
+
+<script>
+	function showmenu(a){
+		$(""
+	}
+	
+	
+	$( ".buttonplace" ).click(function() {
+		type = $( this ).attr( "name" );
+	});
+	
+	function updateradius(a){
+		radius	= parseInt($("#radius").val());
+		if(a==1){
+		$("#activate").val("Parar de buscar");
+		$( "#activate" ).attr( "onclick" ,"updateradius(0)");
+		selection = 1;
+		}
+		if(a==0){
+		$("#activate").val("Buscar sitios");
+		$( "#activate" ).attr( "onclick" ,"updateradius(1)");
+		selection = 0;
+		}
+	}
+	
+</script>
+
 </body>
 </html>
