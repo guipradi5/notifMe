@@ -35,6 +35,7 @@ google.maps.event.addListenerOnce(map, 'idle', function(){
 });
 
 function onSuccess(position) {
+document.getElementById("ERROR").innerHTML = "";
 	console.log("refresh");	
     var lat=position.coords.latitude;
     var lang=position.coords.longitude;
@@ -53,6 +54,7 @@ function getLocation2() {
 	navigator.geolocation.getCurrentPosition(update, onError,{ timeout: 15000 });
 	}
 function update(position) {
+document.getElementById("ERROR").innerHTML = "";
 	console.log("refresh");	
     var lat=position.coords.latitude;
     var lang=position.coords.longitude;
@@ -96,7 +98,14 @@ infowindow = new google.maps.InfoWindow();
         }
       }
 
-	  
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var markers = new google.maps.Marker({
+    map: map,
+	//icon: icons[feature.type].icon,
+	//icon: 'place.png',
+    position: place.geometry.location
+  });	  
 	  
 var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 var icons = {
@@ -112,14 +121,7 @@ var icons = {
 };
 	  
 	  
-function createMarker(place) {
-  var placeLoc = place.geometry.location;
-  var markers = new google.maps.Marker({
-    map: map,
-	//icon: icons[feature.type].icon,
-	//icon: 'place.png',
-    position: place.geometry.location
-  });
+
 
 google.maps.event.addListener(markers, 'click', function() {
     infowindow.setContent(place.name);
@@ -130,7 +132,8 @@ google.maps.event.addListener(markers, 'click', function() {
 	  
 function onError(error) {
     console.log('code: ' + error.code + '\n' +'message: ' + error.message + '\n');
-	getLocation();
+	document.getElementById("ERROR").innerHTML = "An error ocurred, restarting map";
+	setTimeout(getLocation, 10000)
 }
 
 
@@ -163,7 +166,7 @@ function onError(error) {
 	<div class="buttonplace" name="hospital">Hospital</div>
 </div>
 <div id="map-canvas"></div>
-
+<div id="ERROR"></div>
 
 
 <script>
