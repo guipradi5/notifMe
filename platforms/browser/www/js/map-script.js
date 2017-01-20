@@ -127,7 +127,6 @@ function onError(error) {
 		$( "#activate" ).attr( "onclick" ,"updateradius(1)");
 		selection = 0;
 		}
-		getLocation2();
 	}
 	
 
